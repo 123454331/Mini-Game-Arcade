@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="description" content="Fruit Slicer — An exhilarating reflex arcade game. Swipe your blade across airborne fruits, build combos, and avoid bombs!" />
+  <meta name="theme-color" content="#0f111a" />
+  <title>Fruit Slicer — Mini Game Arcade</title>
+
+  <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="arcade-header">
+    <a href="../../index.html" class="back-link">
+      <span>←</span>
+      <span>Mini Game Arcade</span>
+    </a>
+    <h1 class="header-title">🍉 Fruit Slicer</h1>
+    <div class="header-actions">
+      <button id="btn-toggle-sound" class="btn-icon" aria-label="Toggle Sound" title="Toggle Sound">🔊</button>
+      <button id="btn-pause" class="btn-icon" aria-label="Pause Game" title="Pause Game">⏸</button>
+    </div>
+  </header>
+
+  <!-- Game Shell Layout -->
+  <main class="game-shell">
+    
+    <!-- Viewport Container -->
+    <div class="game-viewport">
+      <canvas id="fruit-canvas"></canvas>
+
+      <!-- In-Game HUD -->
+      <div id="hud" class="hud-overlay">
+        <div class="score-box">
+          <span class="score-label">SCORE</span>
+          <span id="hud-score" class="score-val">0</span>
+        </div>
+        <div class="strikes-box">
+          <span id="strike-1" class="strike-item">❌</span>
+          <span id="strike-2" class="strike-item">❌</span>
+          <span id="strike-3" class="strike-item">❌</span>
+        </div>
+      </div>
+
+      <!-- Start Screen Modal -->
+      <div id="modal-start" class="screen-modal">
+        <div class="modal-card">
+          <h2 class="modal-title">🍉 FRUIT SLICER</h2>
+          <p class="modal-desc">Swipe your blade across flying fruits to slice them into halves. Build multi-cut combos and avoid slicing dangerous bombs!</p>
+          <div class="modal-stats">
+            <span>High Score: <strong id="start-high-score">0</strong></span>
+          </div>
+          <button id="btn-start" class="btn-slice-play">START SLICING</button>
+        </div>
+      </div>
+
+      <!-- Pause Screen Modal -->
+      <div id="modal-pause" class="screen-modal hidden">
+        <div class="modal-card">
+          <h2 class="modal-title">GAME PAUSED</h2>
+          <p class="modal-desc">Blade sheathed and on standby.</p>
+          <button id="btn-resume" class="btn-slice-play">RESUME GAME</button>
+        </div>
+      </div>
+
+      <!-- Game Over Modal -->
+      <div id="modal-gameover" class="screen-modal hidden">
+        <div class="modal-card">
+          <h2 class="modal-title">GAME OVER</h2>
+          <div class="modal-stats">
+            <span>Final Score: <strong id="over-score">0</strong></span>
+            <span>Best: <strong id="over-best">0</strong></span>
+          </div>
+          <button id="btn-restart" class="btn-slice-play">PLAY AGAIN</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls Explanation & Rules -->
+    <section class="info-section">
+      <div class="info-card">
+        <h3>🕹 FLIGHT & BLADE CONTROLS</h3>
+        <ul>
+          <li><strong>Desktop Mouse:</strong> Click and drag your cursor rapidly across fruits to slice.</li>
+          <li><strong>Mobile Touch:</strong> Swipe your finger across flying fruits. Multi-touch supported!</li>
+          <li><strong>Pause:</strong> Press <kbd>P</kbd> or <kbd>Esc</kbd>, or tap the pause button in the top bar.</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <h3>⭐ TIPS & COMBOS</h3>
+        <ul>
+          <li><strong>Multi-Slice Combos:</strong> Slice 3 or more fruits in a single fluid swipe for bonus combo points!</li>
+          <li><strong>Watch the Bombs:</strong> Slicing a bomb immediately costs a strike and breaks your rhythm.</li>
+          <li><strong>3 Strikes:</strong> Dropping 3 unsliced fruits ends the game. Stay focused!</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <script type="module">
+    import { FruitGame } from './js/game.js';
+    import { sound } from './js/audio.js';
+
+    const canvas = document.getElementById('fruit-canvas');
+    const game = new FruitGame(canvas);
+
+    // DOM Elements
+    const hudScore = document.getElementById('hud-score');
+    const strike1 = document.getElementById('strike-1');
+    const strike2 = document.getElementById('strike-2');
+    const strike3 = document.getElementById('strike-3');
+
+    const modalStart = document.getElementById('modal-start');
+    const modalPause = document.getElementById('modal-pause');
+    const modalGameOver = document.getElementById('modal-gameover');
+
+    const startHighScore = document.getElementById('start-high-score');
+    const overScore = document.getElementById('over-score');
+    const overBest = document.getElementById('over-best');
+
+    const btnStart = document.getElementById('btn-start');
+    const btnResume = document.getElementById('btn-resume');
+    const btnRestart = document.getElementById('btn-restart');
+    const btnPause = document.getElementById('btn-pause');
+    const btnToggleSound = document.getElementById('btn-toggle-sound');
+
+    // Display initial high score
+    startHighScore.textContent = game.highScore;
+
+    // HUD Update
+    game.onHudUpdate = (hudState) => {
+      hudScore.textContent = hudState.score;
+      strike1.className = 'strike-item ' + (hudState.strikes >= 1 ? 'active' : '');
+      strike2.className = 'strike-item ' + (hudState.strikes >= 2 ? 'active' : '');
+      strike3.className = 'strike-item ' + (hudState.strikes >= 3 ? 'active' : '');
+    };
+
+    // State Changes
+    game.onStateChange = (state) => {
+      if (state === 'PLAYING') {
+        modalStart.classList.add('hidden');
+        modalPause.classList.add('hidden');
+        modalGameOver.classList.add('hidden');
+      } else if (state === 'PAUSED') {
+        modalPause.classList.remove('hidden');
+      } else if (state === 'GAME_OVER') {
+        overScore.textContent = game.score;
+        overBest.textContent = game.highScore;
+        modalGameOver.classList.remove('hidden');
+      }
+    };
+
+    // Button Listeners
+    btnStart.addEventListener('click', () => {
+      sound.initContext();
+      game.startNewGame();
+    });
+
+    btnRestart.addEventListener('click', () => {
+      sound.initContext();
+      game.startNewGame();
+    });
+
+    btnResume.addEventListener('click', () => {
+      game.togglePause();
+    });
+
+    btnPause.addEventListener('click', () => {
+      game.togglePause();
+    });
+
+    btnToggleSound.addEventListener('click', () => {
+      const isEnabled = sound.toggleSound();
+      btnToggleSound.textContent = isEnabled ? '🔊' : '🔇';
+    });
+
+    // Sync initial sound icon
+    btnToggleSound.textContent = sound.soundEnabled ? '🔊' : '🔇';
+  </script>
+</body>
+</html>
+

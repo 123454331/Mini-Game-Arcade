@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="description" content="Cosmic Dodge — Fast-paced space survival arcade browser game. Dodge asteroids, evade enemy drones, and survive 10 challenging sectors!" />
+  <meta name="theme-color" content="#090d16" />
+  <title>Cosmic Dodge — Mini Game Arcade</title>
+
+  <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../css/style.css" />
+  <style>
+    /* Arcade Shell Layout */
+    .arcade-top-nav {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .back-btn {
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.2s ease;
+    }
+    .back-btn:hover {
+      transform: translateX(-3px);
+    }
+    .game-page-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+      gap: 20px;
+    }
+    .info-section {
+      width: 100%;
+      max-width: 600px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .info-card {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 14px;
+      padding: 16px 20px;
+      backdrop-filter: blur(8px);
+    }
+    .info-card h3 {
+      font-size: 14px;
+      font-weight: 800;
+      color: #38bdf8;
+      margin-bottom: 8px;
+    }
+    .info-card p, .info-card li {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+    .info-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body style="display: flex; flex-direction: column; justify-content: flex-start; align-items: center; min-height: 100vh; overflow-y: auto;">
+
+  <!-- Global Arcade Back Header -->
+  <nav class="arcade-top-nav">
+    <a href="../../index.html" class="back-btn">
+      <span>←</span>
+      <span>Mini Game Arcade</span>
+    </a>
+    <span style="font-size: 14px; font-weight: 800; color: #fff;">🚀 Cosmic Dodge</span>
+    <span style="font-size: 11px; font-weight: 700; color: #38bdf8; background: rgba(56,189,248,0.15); padding: 2px 8px; border-radius: 12px;">10 Sectors</span>
+  </nav>
+
+  <div class="game-page-container">
+    <!-- Main Game Container -->
+    <main id="game-wrapper" role="application" aria-label="Cosmic Dodge Game Area" style="position: relative; margin: 0 auto;">
+      
+      <!-- High-DPI 2D Canvas -->
+      <canvas id="game-canvas"></canvas>
+
+      <!-- IN-GAME HEADS-UP DISPLAY (HUD) -->
+      <header id="hud" class="hud-container hidden" aria-label="Gameplay HUD">
+        <div class="hud-top">
+          <div class="hud-group hud-level-info">
+            <span id="hud-level-tag" class="hud-pill">LVL 1</span>
+            <span id="hud-level-title" class="hud-level-title">First Flight</span>
+          </div>
+
+          <div class="hud-group hud-score-box">
+            <span class="hud-label">SCORE</span>
+            <span id="hud-score" class="hud-score-value">0</span>
+          </div>
+
+          <div class="hud-group hud-controls-right">
+            <div id="hud-lives" class="hud-lives" aria-label="Player Lives">
+              <span class="heart full">❤</span>
+              <span class="heart full">❤</span>
+              <span class="heart full">❤</span>
+            </div>
+            <button id="btn-toggle-sound" class="btn-icon" aria-label="Toggle Sound Effects" title="Toggle Sound">🔊</button>
+            <button id="btn-toggle-music" class="btn-icon" aria-label="Toggle Music" title="Toggle Music">🎵</button>
+            <button id="btn-pause" class="btn-icon" aria-label="Pause Game (Esc / P)" title="Pause Game">⏸</button>
+          </div>
+        </div>
+
+        <div class="hud-objectives">
+          <div class="hud-target-item">
+            <span class="target-icon">⏱</span>
+            <span id="hud-timer" class="target-value">20s</span>
+          </div>
+          <div class="hud-target-item">
+            <span class="target-icon">⭐</span>
+            <span id="hud-stars" class="target-value">0 / 5</span>
+          </div>
+        </div>
+
+        <div id="hud-combo-badge" class="hud-combo-badge hidden">
+          <span id="hud-combo-text" class="combo-text">1.5x COMBO</span>
+          <div class="combo-meter">
+            <div id="hud-combo-fill" class="combo-meter-fill"></div>
+          </div>
+        </div>
+
+        <div id="hud-powerups" class="hud-powerups">
+          <div id="hud-badge-shield" class="powerup-badge hidden">
+            <span>🛡</span> <span id="hud-timer-shield">8s</span>
+          </div>
+          <div id="hud-badge-boost" class="powerup-badge hidden">
+            <span>⚡</span> <span id="hud-timer-boost">6s</span>
+          </div>
+          <div id="hud-badge-slowmo" class="powerup-badge hidden">
+            <span>⏳</span> <span id="hud-timer-slowmo">6s</span>
+          </div>
+        </div>
+
+        <div id="mobile-touch-controls" class="mobile-touch-controls">
+          <button id="btn-touch-shield" class="btn-touch-ability" aria-label="Emergency Shield Ability (Spacebar)">
+            <div class="touch-btn-inner">
+              <span class="touch-icon">🛡</span>
+              <span class="touch-text">SHIELD</span>
+            </div>
+            <svg class="touch-cooldown-ring" viewBox="0 0 70 70">
+              <circle class="ring-bg" cx="35" cy="35" r="30" />
+              <circle id="touch-shield-fill" class="ring-fill" cx="35" cy="35" r="30" />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- 1. MAIN MENU SCREEN -->
+      <section id="screen-menu" class="game-screen active">
+        <div class="card glass-card menu-card">
+          <div class="logo-container">
+            <div class="logo-badge">SPACE SURVIVAL ARCADE</div>
+            <h1 class="game-title">COSMIC<br><span class="highlight">DODGE</span></h1>
+            <p class="game-tagline">Dodge hazards, evade alien drones, and claim the cosmos!</p>
+          </div>
+
+          <div class="menu-actions">
+            <button id="btn-play-game" class="btn btn-primary btn-large">
+              <span class="btn-text">PLAY GAME</span>
+              <span class="btn-shine"></span>
+            </button>
+            <button id="btn-open-levels" class="btn btn-secondary">
+              <span>🗺 LEVEL SELECT</span>
+            </button>
+            <button id="btn-open-help" class="btn btn-secondary">
+              <span>📖 HOW TO PLAY</span>
+            </button>
+          </div>
+
+          <div class="menu-stats">
+            <div class="stat-pill">
+              <span class="stat-icon">⭐</span>
+              <span class="stat-label">Total Stars:</span>
+              <strong id="menu-total-stars">0 / 30</strong>
+            </div>
+            <div class="stat-pill">
+              <span class="stat-icon">🏆</span>
+              <span class="stat-label">Best Campaign Score:</span>
+              <strong id="menu-total-score">0</strong>
+            </div>
+          </div>
+
+          <div class="menu-footer">
+            <button id="btn-menu-sound" class="btn-text-link">Sound: ON</button>
+            <span class="separator">•</span>
+            <button id="btn-menu-music" class="btn-text-link">Music: ON</button>
+            <span class="separator">•</span>
+            <button id="btn-open-reset" class="btn-text-link danger">Reset Data</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. LEVEL SELECTION SCREEN -->
+      <section id="screen-level-select" class="game-screen hidden">
+        <div class="card glass-card level-select-card">
+          <div class="screen-header">
+            <h2>MISSION SELECT</h2>
+            <p class="subtitle">Complete levels to unlock deeper sectors</p>
+          </div>
+          <div id="levels-grid" class="levels-grid"></div>
+          <div class="screen-footer">
+            <button id="btn-levels-back" class="btn btn-secondary">
+              <span>← BACK TO MENU</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. HOW TO PLAY MODAL -->
+      <section id="screen-how-to-play" class="game-screen hidden">
+        <div class="card glass-card help-card">
+          <div class="screen-header">
+            <h2>PILOT ACADEMY</h2>
+            <p class="subtitle">Master your ship and survive the gauntlet</p>
+          </div>
+          <div class="help-content-scroll">
+            <div class="help-section">
+              <h3 class="section-title">🕹 FLIGHT CONTROLS</h3>
+              <div class="help-grid">
+                <div class="help-box">
+                  <span class="help-badge">DESKTOP</span>
+                  <p><strong>WASD / Arrow Keys</strong> — Move spaceship</p>
+                  <p><strong>Spacebar</strong> — Emergency Shield pulse</p>
+                  <p><strong>Esc or P</strong> — Pause / Resume</p>
+                  <p><strong>Mouse</strong> — Drag to pilot spaceship</p>
+                </div>
+                <div class="help-box">
+                  <span class="help-badge">MOBILE</span>
+                  <p><strong>Touch & Drag</strong> — Smooth one-finger flight</p>
+                  <p><strong>Shield Button</strong> — Tap to activate shield</p>
+                  <p><strong>Pause Icon</strong> — Tap top-right to pause</p>
+                </div>
+              </div>
+            </div>
+            <div class="help-section">
+              <h3 class="section-title">⭐ POWER-UPS & COMBOS</h3>
+              <p class="help-note">
+                Skim past hazards to trigger <strong>NEAR MISS (+50 pts)</strong>! Collect consecutive stars to ramp up your <strong>Combo Multiplier up to 4.0x</strong>.
+              </p>
+            </div>
+          </div>
+          <div class="screen-footer">
+            <button id="btn-help-close" class="btn btn-primary">
+              <span>GOT IT, LET'S FLY!</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. PAUSE MODAL -->
+      <section id="screen-pause" class="game-screen hidden">
+        <div class="card glass-card modal-card">
+          <h2 class="modal-title">GAME PAUSED</h2>
+          <p class="modal-subtitle">Flight systems on standby</p>
+          <div class="modal-actions">
+            <button id="btn-pause-resume" class="btn btn-primary btn-large">
+              <span>▶ RESUME FLIGHT</span>
+            </button>
+            <button id="btn-pause-restart" class="btn btn-secondary">
+              <span>🔄 RESTART LEVEL</span>
+            </button>
+            <button id="btn-pause-levels" class="btn btn-secondary">
+              <span>🗺 LEVEL SELECT</span>
+            </button>
+            <button id="btn-pause-help" class="btn btn-secondary">
+              <span>📖 HOW TO PLAY</span>
+            </button>
+            <button id="btn-pause-menu" class="btn btn-secondary">
+              <span>🏠 MAIN MENU</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. LEVEL COMPLETE SCREEN -->
+      <section id="screen-level-complete" class="game-screen hidden">
+        <div class="card glass-card modal-card">
+          <div class="level-win-badge">MISSION ACCOMPLISHED</div>
+          <h2 id="win-level-title" class="modal-title">LEVEL 1 CLEARED</h2>
+          <div class="star-rating-container">
+            <span id="win-star-1" class="star-icon">★</span>
+            <span id="win-star-2" class="star-icon">★</span>
+            <span id="win-star-3" class="star-icon">★</span>
+          </div>
+          <div class="stats-table">
+            <div class="stats-row"><span>Sector Score:</span><strong id="win-score">0</strong></div>
+            <div class="stats-row"><span>Stars Collected:</span><strong id="win-stars">0</strong></div>
+            <div class="stats-row"><span>Sector Best:</span><strong id="win-best-score">0</strong></div>
+          </div>
+          <div class="modal-actions">
+            <button id="btn-win-next" class="btn btn-primary btn-large"><span>NEXT SECTOR ➔</span></button>
+            <button id="btn-win-replay" class="btn btn-secondary"><span>🔄 REPLAY LEVEL</span></button>
+            <button id="btn-win-levels" class="btn btn-secondary"><span>🗺 LEVEL SELECT</span></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. GAME OVER SCREEN -->
+      <section id="screen-game-over" class="game-screen hidden">
+        <div class="card glass-card modal-card">
+          <div class="gameover-badge">HULL DESTROYED</div>
+          <h2 class="modal-title danger">MISSION FAILED</h2>
+          <p class="modal-subtitle">Your spaceship took fatal damage</p>
+          <div class="stats-table">
+            <div class="stats-row"><span>Final Score:</span><strong id="fail-score">0</strong></div>
+            <div class="stats-row"><span>Stars Recovered:</span><strong id="fail-stars">0</strong></div>
+            <div class="stats-row"><span>Sector Best:</span><strong id="fail-best-score">0</strong></div>
+          </div>
+          <div class="modal-actions">
+            <button id="btn-fail-retry" class="btn btn-primary btn-large"><span>🔄 RETRY LEVEL</span></button>
+            <button id="btn-fail-levels" class="btn btn-secondary"><span>🗺 LEVEL SELECT</span></button>
+            <button id="btn-fail-menu" class="btn btn-secondary"><span>🏠 MAIN MENU</span></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. CAMPAIGN VICTORY SCREEN -->
+      <section id="screen-campaign-win" class="game-screen hidden">
+        <div class="card glass-card modal-card victory-card">
+          <div class="victory-trophy">🏆</div>
+          <h2 class="modal-title gold">GALAXY DEFENDER!</h2>
+          <p class="modal-subtitle">You conquered all 10 Cosmic Dodge sectors!</p>
+          <div class="stats-table">
+            <div class="stats-row"><span>Total Campaign Score:</span><strong id="campaign-score">0</strong></div>
+            <div class="stats-row"><span>Total Stars Earned:</span><strong id="campaign-stars">30 / 30</strong></div>
+          </div>
+          <div class="modal-actions">
+            <button id="btn-campaign-replay" class="btn btn-primary btn-large"><span>🚀 PLAY CAMPAIGN AGAIN</span></button>
+            <button id="btn-campaign-levels" class="btn btn-secondary"><span>🗺 SELECT ANY LEVEL</span></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. RESET CONFIRM MODAL -->
+      <div id="modal-reset-confirm" class="confirm-modal hidden" role="dialog" aria-modal="true" aria-labelledby="reset-modal-title">
+        <div class="card glass-card confirm-card">
+          <h3 id="reset-modal-title" class="modal-title danger">RESET ALL PROGRESS?</h3>
+          <p class="modal-desc">This will erase unlocked levels, earned stars, and recorded high scores. This action cannot be undone.</p>
+          <div class="confirm-actions">
+            <button id="btn-cancel-reset" class="btn btn-secondary">CANCEL</button>
+            <button id="btn-confirm-reset" class="btn btn-danger">YES, RESET DATA</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Controls Explanation Section Below Game -->
+    <div class="info-section">
+      <div class="info-card">
+        <h3>🕹 HOW TO FLY</h3>
+        <ul>
+          <li><strong>Keyboard:</strong> WASD or Arrow Keys for steering.</li>
+          <li><strong>Emergency Shield:</strong> Press <kbd>Spacebar</kbd> for an instant barrier!</li>
+          <li><strong>Pause:</strong> Press <kbd>P</kbd> or <kbd>Esc</kbd>.</li>
+          <li><strong>Touch:</strong> Touch and drag anywhere on screen.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>⭐ NEAR-MISS & COMBOS</h3>
+        <p>Fly within inches of asteroids, lasers, and enemy projectiles without colliding to earn <strong>NEAR MISS (+50 pts)</strong> and ramp up your combo multiplier up to <strong>4.0x</strong>!</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../../js/main.js"></script>
+</body>
+</html>
+

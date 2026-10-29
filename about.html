@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="description" content="About Mini Game Arcade — Our mission, technology stack, and commitment to fast, private browser games." />
+  <meta name="theme-color" content="#0a0e17" />
+  <title>About Us — Mini Game Arcade</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/arcade.css" />
+</head>
+<body>
+
+  <!-- Site Navigation Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="index.html" class="brand-logo" aria-label="Mini Game Arcade Home">
+        <span class="brand-icon">🕹</span>
+        <span class="brand-text">Mini Game <span>Arcade</span></span>
+      </a>
+
+      <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle Navigation Menu">☰</button>
+
+      <nav>
+        <ul id="nav-links" class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="index.html#games-grid" class="nav-link">Games</a></li>
+          <li><a href="about.html" class="nav-link active">About</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li><a href="privacy.html" class="nav-link">Privacy</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Content Container -->
+  <main class="page-container">
+    <article class="content-card">
+      <h1 class="page-title">About Mini Game Arcade</h1>
+      <p class="page-subtitle">Pure gameplay, crafted for the modern open web.</p>
+
+      <div class="article-content">
+        <h2>Our Mission</h2>
+        <p>
+          <strong>Mini Game Arcade</strong> was founded with a singular conviction: classic arcade gaming in the browser should be fast, delightful, and respect your attention and privacy.
+        </p>
+        <p>
+          Too many modern web game sites are bloated with multi-megabyte game engines, endless loading screens, intrusive pop-up banners, and aggressive trackers. We believe in crafting lightweight, handcrafted HTML5 Canvas games that launch in milliseconds and run buttery-smooth at 60 FPS on both low-power smartphones and high-refresh desktop monitors.
+        </p>
+
+        <h2>Our Technology Stack</h2>
+        <ul>
+          <li><strong>Zero-Framework Frontend:</strong> Built using vanilla HTML5, modern CSS3, and ES6 JavaScript modules. No React or Angular overhead, ensuring instant Time-to-Interactive.</li>
+          <li><strong>High-DPI 2D Canvas:</strong> Rendering routines scale cleanly with <code>window.devicePixelRatio</code> to render crisp vector graphics on Retina and mobile screens.</li>
+          <li><strong>Procedural Web Audio API:</strong> Sound effects and musical loops are generated mathematically in real time. We do not download heavy MP3 audio assets.</li>
+          <li><strong>Local Persistence:</strong> High scores, unlocked sectors, and player sound preferences are safely saved in your browser's <code>localStorage</code>.</li>
+        </ul>
+
+        <h2>Original Art & Integrity</h2>
+        <p>
+          All artwork, vector assets, entity designs, and sound effects across our games are 100% original. We do not use copyrighted assets from commercial franchises, and we never display fake testimonials or deceptive download links.
+        </p>
+      </div>
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <nav class="footer-nav" aria-label="Footer Navigation">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </nav>
+      <p class="footer-copy">© 2026 Mini Game Arcade. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="js/arcade.js"></script>
+</body>
+</html>
+

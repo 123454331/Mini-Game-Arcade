@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="description" content="Mini Game Arcade — A curated collection of fast, responsive, and privacy-friendly browser games. Play Cosmic Dodge and Fruit Slicer instantly with zero downloads!" />
+  <meta name="theme-color" content="#0a0e17" />
+  <title>Mini Game Arcade — Free Instant Browser Games</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/arcade.css" />
+</head>
+<body>
+
+  <!-- Site Navigation Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="index.html" class="brand-logo" aria-label="Mini Game Arcade Home">
+        <span class="brand-icon">🕹</span>
+        <span class="brand-text">Mini Game <span>Arcade</span></span>
+      </a>
+
+      <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle Navigation Menu" aria-expanded="false">
+        ☰
+      </button>
+
+      <nav>
+        <ul id="nav-links" class="nav-links">
+          <li><a href="index.html" class="nav-link active">Home</a></li>
+          <li><a href="#games-grid" class="nav-link">Games</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li><a href="privacy.html" class="nav-link">Privacy</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Introduction Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <span class="hero-badge">INSTANT BROWSER ARCADE</span>
+      <h1 class="hero-title">High-Velocity Arcade Games, <span class="highlight">Zero Friction.</span></h1>
+      <p class="hero-desc">
+        Welcome to <strong>Mini Game Arcade</strong> — your destination for fast, responsive, and 100% free web games. No accounts, no downloads, and no intrusive ads. Every game is built from the ground up with pure HTML5 Canvas and procedural Web Audio.
+      </p>
+    </div>
+  </section>
+
+  <!-- Filter & Search Toolbar -->
+  <section class="filter-bar-container" aria-label="Game Filters">
+    <div class="filter-bar">
+      <!-- Search Input -->
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input 
+          type="search" 
+          id="search-input" 
+          class="search-input" 
+          placeholder="Search games by title, tags, or category..." 
+          aria-label="Search Games"
+        />
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div id="category-tabs" class="category-tabs" role="tablist" aria-label="Game Categories">
+        <!-- Dynamically rendered by js/arcade.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Playable Games Grid -->
+  <main class="games-section">
+    <div class="section-header-row">
+      <h2 class="section-title">Verified Playable Games</h2>
+      <span id="games-count" class="games-counter">Loading games...</span>
+    </div>
+
+    <div id="games-grid" class="games-grid" aria-live="polite">
+      <!-- Dynamically populated from js/games-data.js -->
+    </div>
+  </main>
+
+  <!-- Highlights / Features Section -->
+  <section class="features-section">
+    <div class="features-container">
+      <div class="features-header">
+        <h2>Why Play on Mini Game Arcade?</h2>
+        <p>Built for gamers who value speed, privacy, and smooth gameplay.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-box">
+          <span class="feat-icon">⚡</span>
+          <h3>Instant 60 FPS Play</h3>
+          <p>Zero heavy frameworks or multi-megabyte bundle downloads. Starts playing instantly on any device.</p>
+        </div>
+
+        <div class="feature-box">
+          <span class="feat-icon">📱</span>
+          <h3>Mobile & Desktop Ready</h3>
+          <p>Every game is tuned for seamless keyboard controls, smooth mouse slicing, and ergonomic touch gestures.</p>
+        </div>
+
+        <div class="feature-box">
+          <span class="feat-icon">🔒</span>
+          <h3>Strict Privacy</h3>
+          <p>No tracking cookies, no accounts, and no third-party analytics. Your high scores and progress stay on your device.</p>
+        </div>
+
+        <div class="feature-box">
+          <span class="feat-icon">🎨</span>
+          <h3>Original Vector Art & Audio</h3>
+          <p>Custom vector graphics rendered via 2D Canvas and high-energy sound effects synthesized with the Web Audio API.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <nav class="footer-nav" aria-label="Footer Navigation">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </nav>
+
+      <p class="footer-copy">
+        © 2026 Mini Game Arcade. All games are original works and playable directly in modern web browsers.
+      </p>
+    </div>
+  </footer>
+
+  <script type="module" src="js/arcade.js"></script>
+</body>
+</html>

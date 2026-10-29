@@ -1,0 +1,278 @@
+/**
+ * COSMIC DODGE - LEVEL PROGRESSION CONFIGURATIONS
+ * 10 distinct, handcrafted levels with tailored objectives, hazard rates,
+ * enemy patterns, and environmental threats.
+ */
+
+export const LEVELS = [
+  {
+    id: 1,
+    title: "First Flight",
+    subtitle: "Cosmic Training Grounds",
+    description: "Welcome Cadet! Master basic spaceship handling, dodge gentle asteroids, and collect 5 Energy Stars.",
+    objectiveType: "SURVIVE_AND_STARS",
+    targetDuration: 20,
+    targetStars: 5,
+    starSpawnInterval: 2.2,
+    asteroidSpawnInterval: 2.0,
+    asteroidSpeedRange: [120, 190],
+    allowedAsteroidSizes: ["small", "medium"],
+    allowedPowerups: ["shield"],
+    powerupInterval: 12.0,
+    hasEnemies: false,
+    hasLasers: false,
+    hasMines: false,
+    theme: {
+      nebulaColor1: "rgba(35, 20, 70, 0.45)",
+      nebulaColor2: "rgba(10, 45, 90, 0.4)",
+      accentColor: "#38bdf8",
+      name: "Sapphire Orbit"
+    },
+    scoringThresholds: { twoStars: 800, threeStars: 1400 }
+  },
+  {
+    id: 2,
+    title: "Asteroid Field",
+    subtitle: "Drifting Belt of Vesta",
+    description: "Asteroids now drift from oblique angles! Grab the Shield Power-Up to safely deflect incoming space debris.",
+    objectiveType: "SURVIVE_AND_STARS",
+    targetDuration: 25,
+    targetStars: 8,
+    starSpawnInterval: 2.0,
+    asteroidSpawnInterval: 1.5,
+    asteroidSpeedRange: [140, 230],
+    allowedAsteroidSizes: ["small", "medium", "large"],
+    allowedPowerups: ["shield", "boost"],
+    powerupInterval: 10.0,
+    hasEnemies: false,
+    hasLasers: false,
+    hasMines: false,
+    theme: {
+      nebulaColor1: "rgba(50, 20, 80, 0.45)",
+      nebulaColor2: "rgba(20, 70, 80, 0.4)",
+      accentColor: "#06b6d4",
+      name: "Aquamarine Belt"
+    },
+    scoringThresholds: { twoStars: 1200, threeStars: 2000 }
+  },
+  {
+    id: 3,
+    title: "Star Collector",
+    subtitle: "Golden Stellar Surge",
+    description: "A cosmic star surge! Collect 15 Energy Stars to fuel your hyperspace engine. Use Speed Boost to maneuver swiftly.",
+    objectiveType: "COLLECT_STARS",
+    targetDuration: 30,
+    targetStars: 15,
+    starSpawnInterval: 1.4,
+    asteroidSpawnInterval: 1.4,
+    asteroidSpeedRange: [160, 250],
+    allowedAsteroidSizes: ["small", "medium"],
+    allowedPowerups: ["shield", "boost"],
+    powerupInterval: 9.0,
+    hasEnemies: false,
+    hasLasers: false,
+    hasMines: false,
+    theme: {
+      nebulaColor1: "rgba(70, 40, 10, 0.45)",
+      nebulaColor2: "rgba(90, 20, 70, 0.4)",
+      accentColor: "#facc15",
+      name: "Solar Flare"
+    },
+    scoringThresholds: { twoStars: 1800, threeStars: 2800 }
+  },
+  {
+    id: 4,
+    title: "Meteor Rush",
+    subtitle: "Supersonic Cascade",
+    description: "Meteor shower incoming! Fast meteors drop in staggered waves. Watch for flashing trajectory warnings!",
+    objectiveType: "SURVIVE_TIME",
+    targetDuration: 30,
+    targetStars: 10,
+    starSpawnInterval: 2.0,
+    asteroidSpawnInterval: 0.9,
+    asteroidSpeedRange: [220, 360],
+    allowedAsteroidSizes: ["small", "medium"],
+    allowedPowerups: ["shield", "slowmo"],
+    powerupInterval: 9.0,
+    hasEnemies: false,
+    hasLasers: false,
+    hasMines: false,
+    theme: {
+      nebulaColor1: "rgba(80, 25, 20, 0.5)",
+      nebulaColor2: "rgba(40, 10, 60, 0.4)",
+      accentColor: "#fb923c",
+      name: "Crimson Shower"
+    },
+    scoringThresholds: { twoStars: 1900, threeStars: 3000 }
+  },
+  {
+    id: 5,
+    title: "Enemy Contact",
+    subtitle: "Alien Recon Wing",
+    description: "Alien scout drones detected! They charge up and fire slow-moving plasma energy orbs. Stay mobile and dodge the crosshairs.",
+    objectiveType: "SURVIVE_AND_STARS",
+    targetDuration: 35,
+    targetStars: 12,
+    starSpawnInterval: 1.8,
+    asteroidSpawnInterval: 1.6,
+    asteroidSpeedRange: [150, 240],
+    allowedAsteroidSizes: ["small", "medium"],
+    allowedPowerups: ["shield", "boost", "heart"],
+    powerupInterval: 10.0,
+    hasEnemies: true,
+    enemySpawnInterval: 5.5,
+    enemyType: "scout",
+    hasLasers: false,
+    hasMines: false,
+    theme: {
+      nebulaColor1: "rgba(20, 80, 40, 0.45)",
+      nebulaColor2: "rgba(10, 35, 75, 0.4)",
+      accentColor: "#4ade80",
+      name: "Emerald Expanse"
+    },
+    scoringThresholds: { twoStars: 2200, threeStars: 3400 }
+  },
+  {
+    id: 6,
+    title: "Energy Storm",
+    subtitle: "Pulsar Grid Disruption",
+    description: "High-voltage laser storm! Flashing warning beams telegraph deadly vertical energy lances. Collect Chrono Slow-Mo to weave through.",
+    objectiveType: "SURVIVE_TIME",
+    targetDuration: 35,
+    targetStars: 12,
+    starSpawnInterval: 1.8,
+    asteroidSpawnInterval: 1.5,
+    asteroidSpeedRange: [160, 260],
+    allowedAsteroidSizes: ["small", "medium", "large"],
+    allowedPowerups: ["shield", "slowmo", "boost"],
+    powerupInterval: 9.0,
+    hasEnemies: false,
+    hasLasers: true,
+    laserSpawnInterval: 4.8,
+    hasMines: false,
+    theme: {
+      nebulaColor1: "rgba(70, 20, 90, 0.5)",
+      nebulaColor2: "rgba(10, 70, 110, 0.45)",
+      accentColor: "#c084fc",
+      name: "Pulsar Nexus"
+    },
+    scoringThresholds: { twoStars: 2400, threeStars: 3700 }
+  },
+  {
+    id: 7,
+    title: "Minefield Havoc",
+    subtitle: "Derelict Sector 7",
+    description: "Drifting proximity space mines pulse in tight formations. Careful proximity flying yields huge near-miss combo multipliers!",
+    objectiveType: "SURVIVE_AND_STARS",
+    targetDuration: 40,
+    targetStars: 14,
+    starSpawnInterval: 1.7,
+    asteroidSpawnInterval: 1.4,
+    asteroidSpeedRange: [150, 260],
+    allowedAsteroidSizes: ["small", "medium"],
+    allowedPowerups: ["shield", "boost", "heart"],
+    powerupInterval: 9.0,
+    hasEnemies: false,
+    hasLasers: false,
+    hasMines: true,
+    mineSpawnInterval: 4.5,
+    theme: {
+      nebulaColor1: "rgba(90, 30, 20, 0.5)",
+      nebulaColor2: "rgba(60, 60, 20, 0.4)",
+      accentColor: "#f87171",
+      name: "Derelict Rust"
+    },
+    scoringThresholds: { twoStars: 2600, threeStars: 4200 }
+  },
+  {
+    id: 8,
+    title: "Cosmic Crossfire",
+    subtitle: "Armada Incursion",
+    description: "Alien gunships sweep in while asteroid clusters criss-cross the sector. Use your emergency shield pulse (Space / Shield button) strategically!",
+    objectiveType: "SURVIVE_AND_STARS",
+    targetDuration: 40,
+    targetStars: 15,
+    starSpawnInterval: 1.6,
+    asteroidSpawnInterval: 1.3,
+    asteroidSpeedRange: [180, 290],
+    allowedAsteroidSizes: ["small", "medium", "large"],
+    allowedPowerups: ["shield", "slowmo", "boost", "heart"],
+    powerupInterval: 8.5,
+    hasEnemies: true,
+    enemySpawnInterval: 4.2,
+    enemyType: "gunship",
+    hasLasers: false,
+    hasMines: true,
+    mineSpawnInterval: 6.0,
+    theme: {
+      nebulaColor1: "rgba(80, 15, 60, 0.5)",
+      nebulaColor2: "rgba(30, 15, 80, 0.45)",
+      accentColor: "#ec4899",
+      name: "Magenta Nebula"
+    },
+    scoringThresholds: { twoStars: 3000, threeStars: 4800 }
+  },
+  {
+    id: 9,
+    title: "Nebula Maelstrom",
+    subtitle: "The Eye of the Void",
+    description: "Violent cosmic winds! Erratic comets and rapid debris streams converge with heavy alien patrols. Maximum focus required.",
+    objectiveType: "SURVIVE_TIME",
+    targetDuration: 45,
+    targetStars: 18,
+    starSpawnInterval: 1.5,
+    asteroidSpawnInterval: 1.0,
+    asteroidSpeedRange: [220, 340],
+    allowedAsteroidSizes: ["small", "medium", "large"],
+    allowedPowerups: ["shield", "slowmo", "boost", "heart"],
+    powerupInterval: 8.0,
+    hasEnemies: true,
+    enemySpawnInterval: 4.0,
+    enemyType: "gunship",
+    hasLasers: true,
+    laserSpawnInterval: 5.5,
+    hasMines: false,
+    theme: {
+      nebulaColor1: "rgba(15, 45, 95, 0.55)",
+      nebulaColor2: "rgba(45, 10, 85, 0.5)",
+      accentColor: "#38bdf8",
+      name: "Deep Cosmos"
+    },
+    scoringThresholds: { twoStars: 3400, threeStars: 5400 }
+  },
+  {
+    id: 10,
+    title: "The Cosmic Gauntlet",
+    subtitle: "Final Stand: Mothership Core",
+    description: "The ultimate survival challenge! Face the elite Alien Mothership Drone, laser storms, and dense meteor swarms. Reach the end to claim galaxy victory!",
+    objectiveType: "SURVIVE_AND_STARS",
+    targetDuration: 50,
+    targetStars: 20,
+    starSpawnInterval: 1.5,
+    asteroidSpawnInterval: 0.9,
+    asteroidSpeedRange: [200, 350],
+    allowedAsteroidSizes: ["small", "medium", "large"],
+    allowedPowerups: ["shield", "slowmo", "boost", "heart"],
+    powerupInterval: 7.5,
+    hasEnemies: true,
+    enemySpawnInterval: 3.5,
+    enemyType: "boss",
+    hasLasers: true,
+    laserSpawnInterval: 4.8,
+    hasMines: true,
+    mineSpawnInterval: 5.5,
+    theme: {
+      nebulaColor1: "rgba(100, 20, 20, 0.55)",
+      nebulaColor2: "rgba(80, 10, 90, 0.5)",
+      accentColor: "#f59e0b",
+      name: "Supernova Core"
+    },
+    scoringThresholds: { twoStars: 4200, threeStars: 6800 }
+  }
+];
+
+export function getLevelConfig(levelNumber) {
+  const index = Math.max(0, Math.min(LEVELS.length - 1, levelNumber - 1));
+  return LEVELS[index];
+}
+
